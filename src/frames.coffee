@@ -11,29 +11,29 @@ class Frame
   # A frame needs to be configured with rules
   # regarding their slots in order to be evaluated
   addRule: (requiredSlots, callback) ->
-    if typeof cb == 'function'
+    if typeof callback == 'function'
       @rules.push
         slots: requiredSlots
         procedure: callback
 
   evaluate: (instance) ->
     isDefinedSlot = (slot) ->
-      typeof instance?.slot not in ['undefined', 'function']
+      typeof instance?[slot] not in ['undefined', 'function']
     
     # A frame matches if all rules are true
     _.all @rules, (rule) ->
-	    # An object needs to have all required slots...
-	    _.all(rule.slots, isDefinedSlot) and
-	        # ...and pass all rules in order to match
-    	    rule.procedure instance || {}
+      # An object needs to have all required slots...
+      _.all(rule.slots, isDefinedSlot) and
+          # ...and pass all rules in order to match
+          rule.procedure instance || {}
 
 budgetExceeded = new Frame
 budgetExceeded.addRule ['totalBudget', 'executedBudged'],
     (slots) ->
-      return slots.presupuestoTotal < slots.presupuestoEjecutado
+      return slots.totalBudget < slots.executedBudged
 
 project =
   executedBudged: 11
-  totalBudget:     10
+  totalBudget:    10
 
 console.log budgetExceeded.evaluate project
