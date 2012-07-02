@@ -1,111 +1,156 @@
 <html>
 <head>
-  <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <link href="css/project.css" rel="stylesheet">
-  <script src="lib/jquery-1.7.2.min.js"></script>
-  <title>Diagn&oacute;stico del proyecto</title>
-  <script>
-    $(function() {
-      $("#reset").click(function() {
-         $("#projectForm input").each(function() {
-             $(this).val("");
-         });
-      });
-    });
-  </script>
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="css/project.css" rel="stylesheet">
+    <script src="lib/jquery-1.7.2.min.js"></script>
+    <script src="lib/jquery-validation-1.9.0/jquery.validate.min.js"></script>
+    <script src="lib/jquery-validation-1.9.0/localization/messages_es.js"></script>
+
+    <title>Diagn&oacute;stico del proyecto</title>
+    <script>
+        $(function () {
+//            $("#projectForm").validate({
+//                rules:{
+//                    totalBudget: {required: true},
+//                    executedBudget:"required",
+//                    commitedFunctionality:"required",
+//                    deliveredFunctionality:"required",
+//                    estimatedTime:"required",
+//                    elapsedTime:"required",
+//                    estimatedEffort:"required",
+//                    investedEffort:"required"
+//                }
+//            });
+
+            $("#reset").click(function () {
+                $("#projectForm input").each(function () {
+                    $(this).val("");
+                });
+            });
+
+            $("#process").click(function () {
+                if (!$("#projectForm").valid()) {
+                    return false;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-  <h2>Ingrese los datos de su proyecto</h2>
-  <form id="projectForm" class="form-horizontal">
+<h2>Ingrese los datos de su proyecto</h2>
+
+<form id="projectForm" class="form-horizontal" method="get" action="">
     <fieldset>
-      <div class="control-group">
-        <label class="control-label" for="projectType">Tipo de proyecto</label>
-        <div class="controls">
-          <select id="projectType">
-            <option value="fp">Fixed Price</option>
-            <option value="tm">Time &amp; Materials</option>
-            <option value="mp">Manpower</option>
-            <option value="cp">CPFF</option>
-          </select>
+        <div class="control-group">
+            <label class="control-label" for="projectType">Tipo de proyecto</label>
+
+            <div class="controls">
+                <select id="projectType">
+                    <option value="fp">Fixed Price</option>
+                    <option value="tm">Time &amp; Materials</option>
+                    <option value="mp">Manpower</option>
+                    <option value="cp">CPFF</option>
+                </select>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="totalBudget">Presupuesto</label>
-        <div class="controls">
-          <div class="input-prepend">
-            <span class="add-on">$</span><input class="input-xlarge" id="totalBudget" size="16" type="text">
-            <p class="help-block">Presupuesto estimado del proyecto</p>
-          </div>
+        <div class="control-group">
+            <label class="control-label" for="totalBudget">Presupuesto</label>
+
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on">$</span><input class="input-xlarge required" id="totalBudget" size="16" type="text">
+
+                    <p class="help-block">Presupuesto estimado del proyecto</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="executedBudget">Presupuesto real ejecutado</label>
-        <div class="controls">
-          <div class="input-prepend">
-            <span class="add-on">$</span><input class="span2" id="executedBudget" size="16" type="text">
-            <p class="help-block">Presupuesto real ejecutado del proyecto</p>
-          </div>
+        <div class="control-group">
+            <label class="control-label" for="executedBudget">Presupuesto real ejecutado</label>
+
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on">$</span><input class="input-xlarge required" id="executedBudget" size="16" type="text">
+
+                    <p class="help-block">Presupuesto real ejecutado del proyecto</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="commitedFunctionality">Funcionalidad comprometida</label>
-        <div class="controls">
-          <input class="span2" id="commitedFunctionality" size="16" type="text">
-          <p class="help-block">Asigne un puntaje a la funcionalidad con la que se comprometi&oacute;</p>
+        <div class="control-group">
+            <label class="control-label" for="commitedFunctionality">Funcionalidad comprometida</label>
+
+            <div class="controls">
+                <input class="input-xlarge required" id="commitedFunctionality" size="16" type="text">
+
+                <p class="help-block">Asigne un puntaje a la funcionalidad con la que se comprometi&oacute;</p>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="deliveredFunctionality">Funcionalidad entregada</label>
-        <div class="controls">
-          <input class="span2" id="deliveredFunctionality" size="16" type="text">
-          <p class="help-block">Teniendo en cuenta el puntaje anterior, asigne un puntaje a la funcionalidad entregada</p>          
+        <div class="control-group">
+            <label class="control-label" for="deliveredFunctionality">Funcionalidad entregada</label>
+
+            <div class="controls">
+                <input class="input-xlarge required" id="deliveredFunctionality" size="16" type="text">
+
+                <p class="help-block">Teniendo en cuenta el puntaje anterior, asigne un puntaje a la funcionalidad
+                    entregada</p>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="estimatedTime">Tiempo estimado</label>
-        <div class="controls">
-          <input class="span2" id="estimatedTime" size="16" type="text">
-          <p class="help-block">Tiempo estimado del proyecto</p>
+        <div class="control-group">
+            <label class="control-label" for="estimatedTime">Tiempo estimado</label>
+
+            <div class="controls">
+                <input class="input-xlarge required" id="estimatedTime" size="16" type="text">
+
+                <p class="help-block">Tiempo estimado del proyecto</p>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="elapsedTime">Tiempo transcurrido</label>
-        <div class="controls">
-          <input class="span2" id="elapsedTime" size="16" type="text">
-          <p class="help-block">Tiempo transcurrido del proyecto</p>
+        <div class="control-group">
+            <label class="control-label" for="elapsedTime">Tiempo transcurrido</label>
+
+            <div class="controls">
+                <input class="input-xlarge required" id="elapsedTime" size="16" type="text">
+
+                <p class="help-block">Tiempo transcurrido del proyecto</p>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="estimatedEffort">Esfuerzo estimado</label>
-        <div class="controls">
-          <input class="span2" id="estimatedEffort" size="16" type="text">
-          <p class="help-block">Cantidad de horas hombre estimadas (dependiendo cantidad de recursos, si son part o full time, etc)</p>          
+        <div class="control-group">
+            <label class="control-label" for="estimatedEffort">Esfuerzo estimado</label>
+
+            <div class="controls">
+                <input class="input-xlarge required" id="estimatedEffort" size="16" type="text">
+
+                <p class="help-block">Cantidad de horas hombre estimadas (dependiendo cantidad de recursos, si son part
+                    o full time, etc)</p>
+            </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="investedEffort">Esfuerzo invertido</label>
-        <div class="controls">
-          <input class="span2" id="investedEffort" size="16" type="text">
-          <p class="help-block">Cantidad de horas hombre invertidas (dependiendo cantidad de recursos, si son part o full time, etc)</p>          
+        <div class="control-group">
+            <label class="control-label" for="investedEffort">Esfuerzo invertido</label>
+
+            <div class="controls">
+                <input class="input-xlarge required" id="investedEffort" size="16" type="text">
+
+                <p class="help-block">Cantidad de horas hombre invertidas (dependiendo cantidad de recursos, si son part
+                    o full time, etc)</p>
+            </div>
         </div>
-      </div>
-      <div class="form-actions">
-        <button type="button" id="reset" class="btn-large btn-warning">Reset</button>&nbsp;&nbsp;<button type="submit" class="btn-primary btn-large">Procesar proyecto!</button>
-      </div>
+        <div class="form-actions">
+            <button type="button" id="reset" class="btn-large btn-warning">Reset</button>
+            &nbsp;&nbsp;
+            <button type="button" id="process" class="btn-primary btn-large">Procesar proyecto!</button>
+        </div>
     </fieldset>
-  </form>
-  <!-- 
-    executedBudget: 11
-    totalBudget:    10
-    
-    deliveredFunctionality: 6
-    commitedFunctionality:  5
-    
-    elapsedTime:    5
-    estimatedTime: 20
-    
-    investedEffort:    3
-    estimatedEffort: 10
-  -->
+</form>
+<!--
+  executedBudget: 11
+  totalBudget:    10
+
+  deliveredFunctionality: 6
+  commitedFunctionality:  5
+
+  elapsedTime:    5
+  estimatedTime: 20
+
+  investedEffort:    3
+  estimatedEffort: 10
+-->
 </body>
 </html>
