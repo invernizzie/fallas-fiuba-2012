@@ -5,7 +5,7 @@
   <title>Diagn&oacute;stico del proyecto</title>
 </head>
 <body>
-  <h1>Ingrese los datos de su proyecto</h1>
+  <h2>Ingrese los datos de su proyecto</h2>
   <form id="projectForm" class="form-horizontal">
     <fieldset>
       <div class="control-group">
@@ -23,7 +23,8 @@
         <label class="control-label" for="totalBudget">Presupuesto</label>
         <div class="controls">
           <div class="input-prepend">
-            <span class="add-on">$</span><input class="span2" id="totalBudget" size="16" type="text">
+            <span class="add-on">$</span><input class="input-xlarge" id="totalBudget" size="16" type="text">
+            <p class="help-block">Presupuesto estimado del proyecto</p>
           </div>
         </div>
       </div>
@@ -32,6 +33,7 @@
         <div class="controls">
           <div class="input-prepend">
             <span class="add-on">$</span><input class="span2" id="executedBudget" size="16" type="text">
+            <p class="help-block">Presupuesto real ejecutado del proyecto</p>
           </div>
         </div>
       </div>
@@ -39,40 +41,46 @@
         <label class="control-label" for="commitedFunctionality">Funcionalidad comprometida</label>
         <div class="controls">
           <input class="span2" id="commitedFunctionality" size="16" type="text">
+          <p class="help-block">Asigne un puntaje a la funcionalidad con la que se comprometi&oacute;</p>
         </div>
       </div>
       <div class="control-group">
         <label class="control-label" for="deliveredFunctionality">Funcionalidad entregada</label>
         <div class="controls">
           <input class="span2" id="deliveredFunctionality" size="16" type="text">
+          <p class="help-block">Teniendo en cuenta el puntaje anterior, asigne un puntaje a la funcionalidad entregada</p>          
         </div>
       </div>
       <div class="control-group">
         <label class="control-label" for="estimatedTime">Tiempo estimado</label>
         <div class="controls">
           <input class="span2" id="estimatedTime" size="16" type="text">
+          <p class="help-block">Tiempo estimado del proyecto</p>
         </div>
       </div>
       <div class="control-group">
         <label class="control-label" for="elapsedTime">Tiempo transcurrido</label>
         <div class="controls">
           <input class="span2" id="elapsedTime" size="16" type="text">
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="investedEffort">Esfuerzo invertido</label>
-        <div class="controls">
-          <input class="span2" id="investedEffort" size="16" type="text">
+          <p class="help-block">Tiempo transcurrido del proyecto</p>
         </div>
       </div>
       <div class="control-group">
         <label class="control-label" for="estimatedEffort">Esfuerzo estimado</label>
         <div class="controls">
           <input class="span2" id="estimatedEffort" size="16" type="text">
+          <p class="help-block">Cantidad de horas hombre estimadas (dependiendo cantidad de recursos, si son part o full time, etc)</p>          
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="investedEffort">Esfuerzo invertido</label>
+        <div class="controls">
+          <input class="span2" id="investedEffort" size="16" type="text">
+          <p class="help-block">Cantidad de horas hombre invertidas (dependiendo cantidad de recursos, si son part o full time, etc)</p>          
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Procesar proyecto!</button>
+        <button type="submit" class="btn-primary btn-large">Procesar proyecto!</button>
       </div>
     </fieldset>
   </form>
