@@ -1,0 +1,58 @@
+<html>
+<head>
+  <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="css/project.css" rel="stylesheet">
+  <title>Diagn&oacute;stico del proyecto</title>
+</head>
+<body>
+  <h1>Ingrese los datos de su proyecto</h1>
+  <form id="projectForm" class="form-horizontal">
+    <fieldset>
+      <div class="control-group">
+        <label class="control-label" for="totalBudget">Presupuesto</label>
+        <div class="controls">
+          <div class="input-prepend">
+            <span class="add-on">$</span><input class="span2" id="totalBudget" size="16" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="executedBudget">Presupuesto real ejecutado</label>
+        <div class="controls">
+          <div class="input-prepend">
+            <span class="add-on">$</span><input class="span2" id="executedBudget" size="16" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="commitedFunctionality">Funcionalidad comprometida</label>
+        <div class="controls">
+          <input class="span2" id="commitedFunctionality" size="16" type="text">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="deliveredFunctionality">Funcionalidad entregada</label>
+        <div class="controls">
+          <input class="span2" id="deliveredFunctionality" size="16" type="text">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Procesar proyecto!</button>
+      </div>
+    </fieldset>
+  </form>
+  <!-- 
+    executedBudget: 11
+    totalBudget:    10
+    
+    deliveredFunctionality: 6
+    commitedFunctionality:  5
+    
+    elapsedTime:    5
+    estimatedTime: 20
+    
+    investedEffort:    3
+    estimatedEffort: 10
+  -->
+</body>
+</html>
