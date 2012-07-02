@@ -2,7 +2,17 @@
 <head>
   <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
   <link href="css/project.css" rel="stylesheet">
+  <script src="lib/jquery-1.7.2.min.js"></script>
   <title>Diagn&oacute;stico del proyecto</title>
+  <script>
+    $(function() {
+      $("#reset").click(function() {
+         $("#projectForm input").each(function() {
+             $(this).val("");
+         });
+      });
+    });
+  </script>
 </head>
 <body>
   <h2>Ingrese los datos de su proyecto</h2>
@@ -80,7 +90,7 @@
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn-primary btn-large">Procesar proyecto!</button>
+        <button type="button" id="reset" class="btn-large btn-warning">Reset</button>&nbsp;&nbsp;<button type="submit" class="btn-primary btn-large">Procesar proyecto!</button>
       </div>
     </fieldset>
   </form>
