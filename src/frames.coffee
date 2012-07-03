@@ -1,4 +1,4 @@
-_ = require 'underscore'
+_ = require 'underscore' unless _?
 # For some utility functions
 # See http://documentcloud.github.com/underscore
 
@@ -16,7 +16,6 @@ class Frame
       @rules.push
         slots: requiredSlots
         procedure: callback
-      #
       return this
 
   evaluate: (instance) ->
@@ -30,83 +29,13 @@ class Frame
           # ...and pass all rules in order to match
           rule.procedure instance || {}
 
-frames = []
-createSingleRuleFrame = (name, requiredSlots, ruleProcedure) ->
-  frames.push(
-    (new Frame name: name).addRule requiredSlots, ruleProcedure
-  )
+class CompositeFrame
+  constructor: (properties) ->
+    _.extend this, properties
   
-createSingleRuleFrame 'Presupuesto superado',
-    ['totalBudget', 'executedBudget'],
-    (proj) -> proj.budgetExceeded()
-
-createSingleRuleFrame 'Costos subestimados',
-    [
-      'totalBudget'
-      'executedBudget'
-      'commitedFunctionality'
-      'deliveredFunctionality'
-    ],
-    (proj) ->
-      spendingRatio = proj.executedBudget / proj.totalBudget
-      deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
-      spendingRatio > deliveryRatio
-
-createSingleRuleFrame 'Calendario atrasado',
-    [
-      'elapsedTime'
-      'estimatedTime'
-      'commitedFunctionality'
-      'deliveredFunctionality'
-    ],
-    (proj) ->
-      calendarRatio = proj.elapsedTime / proj.estimatedTime
-      deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
-      calendarRatio > deliveryRatio
-
-createSingleRuleFrame 'Esfuerzo subestimado',
-    [
-      'investedEffort'
-      'estimatedEffort'
-      'commitedFunctionality'
-      'deliveredFunctionality'
-    ],
-    (proj) ->
-      effortRatio = proj.investedEffort / proj.estimatedEffort
-      deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
-      effortRatio > deliveryRatio
-
-createSingleRuleFrame 'Gestion de cambios deficiente',
-    [
-      'commitedFunctionality'
-      'deliveredFunctionality'
-    ],
-    (proj) ->
-      proj.deliveredFunctionality > 1.1 * proj.commitedFunctionality
-
-createSingleRuleFrame 'Calendario excedente',
-    [
-      'elapsedTime'
-      'estimatedTime'
-      'commitedFunctionality'
-      'deliveredFunctionality'
-    ],
-    (proj) ->
-      allDelivered = proj.deliveredFunctionality >= proj.commitedFunctionality
-      early = proj.estimatedTime > 1.1 * proj.elapsedTime
-      allDelivered and early
-
-createSingleRuleFrame 'Esfuerzo sobreestimado',
-    [
-      'investedEffort'
-      'estimatedEffort'
-      'commitedFunctionality'
-      'deliveredFunctionality'
-    ],
-    (proj) ->
-      allDelivered = proj.deliveredFunctionality >= proj.commitedFunctionality
-      overestimated = proj.estimatedEffort > 1.1 * proj.investedEffort
-      allDelivered and overestimated
+  evaluate: (matchedFrames) ->
+    _.all @requiredFrames, (frame) ->
+      _.contains _.pluck(matchedFrames, 'name'), frame
 
 class Project
   constructor: (properties) ->
@@ -117,22 +46,22 @@ class Project
     
   overdue: ->
     @elapsedTime > @estimatedTime
-
-project = new Project
-    executedBudget: 11
-    totalBudget:    10
-    
-    deliveredFunctionality: 6
-    commitedFunctionality:  5
-    
-    elapsedTime:    5
-    estimatedTime: 20
-    
-    investedEffort:    3
-    estimatedEffort: 10
+  
+evaluateFrames = (simpleFrames, compositeFrames, instance) ->
+  simpleMatched = (frame for frame in simpleFrames when frame.evaluate instance)
+  compositeMatched = (frame for frame in compositeFrames when frame.evaluate simpleMatched)
+  return simpleFrames: simpleMatched, compositeFrames: compositeMatched
 
 
-for frame in frames
-  if frame.evaluate project
-    console.log "El marco '#{frame.name}' coincide"
-
+# Export as node module
+module.exports.Project = Project
+module.exports.Frame = Frame
+module.exports.CompositeFrame = CompositeFrame
+module.exports.evaluate = evaluateFrames
+# Export for the browser
+_window = this
+# Doesn't fail like window.Project = ... on node.js
+_window.Project = Project
+_window.Frame = Frame
+_window.CompositeFrame = CompositeFrame
+_window.evaluate = evaluateFrames
