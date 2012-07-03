@@ -1,4 +1,4 @@
-_ = require 'underscore' unless _?
+#_ = require 'underscore' unless _?
 # For some utility functions
 # See http://documentcloud.github.com/underscore
 
@@ -54,14 +54,15 @@ evaluateFrames = (simpleFrames, compositeFrames, instance) ->
 
 
 # Export as node module
-module.exports.Project = Project
-module.exports.Frame = Frame
-module.exports.CompositeFrame = CompositeFrame
-module.exports.evaluate = evaluateFrames
+if module?
+  module.exports.Project = Project
+  module.exports.Frame = Frame
+  module.exports.CompositeFrame = CompositeFrame
+  module.exports.evaluate = evaluateFrames
 # Export for the browser
 _window = this
 # Doesn't fail like window.Project = ... on node.js
 _window.Project = Project
 _window.Frame = Frame
 _window.CompositeFrame = CompositeFrame
-_window.evaluate = evaluateFrames
+_window.evaluateFrames = evaluateFrames
