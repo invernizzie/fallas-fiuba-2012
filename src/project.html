@@ -2,10 +2,13 @@
 <head>
     <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="css/project.css" rel="stylesheet">
+    <script src="lib/underscore-min.js"></script>
     <script src="lib/jquery-1.7.2.min.js"></script>
     <script src="lib/jquery-validation-1.9.0/jquery.validate.min.js"></script>
     <script src="lib/jquery-validation-1.9.0/localization/messages_es.js"></script>
-
+    <script src="lib/frames.js"></script>
+    <script src="lib/sample-frames.js"></script>
+    
     <title>Diagn&oacute;stico del proyecto</title>
     <script>
         $(function () {
@@ -29,16 +32,67 @@
             });
 
             $("#process").click(function () {
-                if (!$("#projectForm").valid()) {
-                    return false;
+                var project = new Project({
+                    executedBudget: $('#executedBudget').val(),
+                    totalBudget: $('#totalBudget').val(),
+                    deliveredFunctionality: $('#deliveredFunctionality').val(),
+                    commitedFunctionality: $('#commitedFunctionality').val(),
+                    elapsedTime: $('#elapsedTime').val(),
+                    estimatedTime: $('#estimatedTime').val(),
+                    investedEffort: $('#investedEffort').val(),
+                    estimatedEffort: $('#estimatedEffort').val(),
+                    projectType: $('#projectType').val(),
+                });
+                
+                matches = evaluateFrames(simpleFrames, compositeFrames, project);
+                
+                if (matches.compositeFrames.length > 0) {
+                    $('#results')
+                        .html("<h3>Coinciden los marcos</h3>");
+                    
+                    _.forEach(matches.compositeFrames, function(frame) {
+                        $('#results').append("<div>" + frame.name + "</div>")
+                    });
+                } else if (matches.simpleFrames.length > 0) {
+                    $('#results')
+                        .html("<h3>Coinciden los marcos</h3>");
+                    
+                    _.forEach(matches.simpleFrames, function(frame) {
+                        $('#results').append("<div>" + frame.name + "</div>")
+                    });
+                } else {
+                    $('#results')
+                        .html("<h3>No coincide ningun marco conocido</h3>");
                 }
+                /*if (!$("#projectForm").valid()) {
+                    return false;
+                }*/
             });
         });
     </script>
+    <!--
+      executedBudget: 11
+      totalBudget:    10
+
+      deliveredFunctionality: 6
+      commitedFunctionality:  5
+
+      elapsedTime:    5
+      estimatedTime: 20
+
+      investedEffort:    3
+      estimatedEffort: 10
+    -->
+    <style>
+        .side-by-side {
+            float: left;
+            clear: both;
+        }
+    </style>
 </head>
 <body>
-<h2>Ingrese los datos de su proyecto</h2>
 
+<h2>Ingrese los datos de su proyecto</h2>
 <form id="projectForm" class="form-horizontal" method="get" action="">
     <fieldset>
         <div class="control-group">
@@ -139,18 +193,8 @@
         </div>
     </fieldset>
 </form>
-<!--
-  executedBudget: 11
-  totalBudget:    10
-
-  deliveredFunctionality: 6
-  commitedFunctionality:  5
-
-  elapsedTime:    5
-  estimatedTime: 20
-
-  investedEffort:    3
-  estimatedEffort: 10
--->
+<h2>Resultados</h2>
+<div id="results"></div>
+</div>
 </body>
 </html>
