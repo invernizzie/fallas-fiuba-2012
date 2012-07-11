@@ -1,38 +1,85 @@
 simpleFrames = []
-createSingleRuleFrame = (name, requiredSlots, ruleProcedure) ->
+createSingleRuleFrame = (name, severity, requiredSlots, ruleProcedure) ->
   simpleFrames.push(
-    (new Frame name: name).addRule requiredSlots, ruleProcedure
+    (new Frame
+        name:     name
+        severity: severity
+    ).addRule requiredSlots, ruleProcedure
   )
-  
-createSingleRuleFrame 'Presupuesto superado',
-    ['totalBudget', 'executedBudget'],
-    (proj) -> proj.budgetExceeded()
 
-createSingleRuleFrame 'Costos subestimados',
+SEVERIDAD =
+  GRAVE: 'Grave'
+  MEDIA: 'Media'
+
+ACUERDO =
+  FIXED_PRICE: 'fp'
+  CPFF:        'cpff'
+  TIME_MAT:    'tm'
+  MANPOWER:    'mp'
+
+createSingleRuleFrame 'Presupuesto superado', SEVERIDAD.GRAVE,
+    ['totalBudget', 'executedBudget', 'projectType'],
+    (proj) ->
+      proj.budgetExceeded() and proj.projectType in [ACUERDO.FIXED_PRICE, ACUERDO.CPFF]
+
+createSingleRuleFrame 'Presupuesto superado', SEVERIDAD.MEDIA,
+    ['totalBudget', 'executedBudget', 'projectType'],
+    (proj) ->
+      proj.budgetExceeded() and proj.projectType not in [ACUERDO.FIXED_PRICE, ACUERDO.CPFF]
+
+createSingleRuleFrame 'Costos subestimados', SEVERIDAD.GRAVE,
     [
       'totalBudget'
       'executedBudget'
       'commitedFunctionality'
       'deliveredFunctionality'
+      'projectType'
     ],
     (proj) ->
       spendingRatio = proj.executedBudget / proj.totalBudget
       deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
-      spendingRatio > deliveryRatio
+      spendingRatio > deliveryRatio and proj.projectType in [ACUERDO.FIXED_PRICE, ACUERDO.TIME_MAT]
 
-createSingleRuleFrame 'Calendario atrasado',
+createSingleRuleFrame 'Costos subestimados', SEVERIDAD.MEDIA,
+    [
+      'totalBudget'
+      'executedBudget'
+      'commitedFunctionality'
+      'deliveredFunctionality'
+      'projectType'
+    ],
+    (proj) ->
+      spendingRatio = proj.executedBudget / proj.totalBudget
+      deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
+      spendingRatio > deliveryRatio and proj.projectType is ACUERDO.CPFF
+
+createSingleRuleFrame 'Calendario atrasado', SEVERIDAD.GRAVE,
     [
       'elapsedTime'
       'estimatedTime'
       'commitedFunctionality'
       'deliveredFunctionality'
+      'projectType'
     ],
     (proj) ->
       calendarRatio = proj.elapsedTime / proj.estimatedTime
       deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
-      calendarRatio > deliveryRatio
+      calendarRatio > deliveryRatio and proj.projectType is ACUERDO.CPFF
 
-createSingleRuleFrame 'Esfuerzo subestimado',
+createSingleRuleFrame 'Calendario atrasado', SEVERIDAD.MEDIA,
+    [
+      'elapsedTime'
+      'estimatedTime'
+      'commitedFunctionality'
+      'deliveredFunctionality'
+      'projectType'
+    ],
+    (proj) ->
+      calendarRatio = proj.elapsedTime / proj.estimatedTime
+      deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
+      calendarRatio > deliveryRatio and proj.projectType in [ACUERDO.MANPOWER, ACUERDO.TIME_MAT]
+
+createSingleRuleFrame 'Esfuerzo subestimado', SEVERIDAD.GRAVE,
     [
       'investedEffort'
       'estimatedEffort'
@@ -44,13 +91,25 @@ createSingleRuleFrame 'Esfuerzo subestimado',
       deliveryRatio = proj.deliveredFunctionality / proj.commitedFunctionality
       effortRatio > deliveryRatio
 
-createSingleRuleFrame 'Gestion de cambios deficiente',
+createSingleRuleFrame 'Gestion de cambios deficiente', SEVERIDAD.GRAVE,
     [
       'commitedFunctionality'
       'deliveredFunctionality'
+      'projectType'
     ],
     (proj) ->
-      proj.deliveredFunctionality > 1.1 * proj.commitedFunctionality
+      proj.deliveredFunctionality > 1.1 * proj.commitedFunctionality and
+          proj.projectType in [ACUERDO.FIXED_PRICE, ACUERDO.CPFF]
+
+createSingleRuleFrame 'Gestion de cambios deficiente', SEVERIDAD.MEDIA,
+    [
+      'commitedFunctionality'
+      'deliveredFunctionality'
+      'projectType'
+    ],
+    (proj) ->
+      proj.deliveredFunctionality > 1.1 * proj.commitedFunctionality and
+          proj.projectType is ACUERDO.TIME_MAT
 
 createSingleRuleFrame 'Calendario excedente',
     [
@@ -64,17 +123,31 @@ createSingleRuleFrame 'Calendario excedente',
       early = proj.estimatedTime > 1.1 * proj.elapsedTime
       allDelivered and early
 
-createSingleRuleFrame 'Esfuerzo sobreestimado',
+createSingleRuleFrame 'Esfuerzo sobreestimado', SEVERIDAD.ALTO,
     [
       'investedEffort'
       'estimatedEffort'
       'commitedFunctionality'
       'deliveredFunctionality'
+      'projectType'
     ],
     (proj) ->
       allDelivered = proj.deliveredFunctionality >= proj.commitedFunctionality
       overestimated = proj.estimatedEffort > 1.1 * proj.investedEffort
-      allDelivered and overestimated
+      allDelivered and overestimated and proj.projectType is ACUERDO.MANPOWER
+
+createSingleRuleFrame 'Esfuerzo sobreestimado', SEVERIDAD.MEDIA,
+    [
+      'investedEffort'
+      'estimatedEffort'
+      'commitedFunctionality'
+      'deliveredFunctionality'
+      'projectType'
+    ],
+    (proj) ->
+      allDelivered = proj.deliveredFunctionality >= proj.commitedFunctionality
+      overestimated = proj.estimatedEffort > 1.1 * proj.investedEffort
+      allDelivered and overestimated and proj.projectType is ACUERDO.FIXED_PRICE
 
 compositeFrames = []
 compositeFrames.push new CompositeFrame
