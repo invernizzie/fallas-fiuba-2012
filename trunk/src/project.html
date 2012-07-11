@@ -1,10 +1,12 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="css/project.css" rel="stylesheet">
     <script src="lib/underscore-min.js"></script>
     <script src="lib/jquery-1.7.2.min.js"></script>
-    <script src="lib/jquery-validation-1.9.0/jquery.validate.min.js"></script>
+    <script src="lib/jquery-validation-1.9.0/jquery.validate.js"></script>
     <script src="lib/jquery-validation-1.9.0/localization/messages_es.js"></script>
     <script src="lib/frames.js"></script>
     <script src="lib/sample-frames.js"></script>
@@ -12,77 +14,69 @@
     <title>Diagn&oacute;stico del proyecto</title>
     <script>
         $(function () {
-//            $("#projectForm").validate({
-//                rules:{
-//                    totalBudget: {required: true},
-//                    executedBudget:"required",
-//                    commitedFunctionality:"required",
-//                    deliveredFunctionality:"required",
-//                    estimatedTime:"required",
-//                    elapsedTime:"required",
-//                    estimatedEffort:"required",
-//                    investedEffort:"required"
-//                }
-//            });
+            $("#projectForm").validate({
+                rules:{
+                    totalBudget: {required: true, digits: true},
+                    executedBudget:{required: true, digits: true},
+                    commitedFunctionality:{required: true, digits: true},
+                    deliveredFunctionality:{required: true, digits: true},
+                    estimatedTime:{required: true},
+                    elapsedTime:{required: true},
+                    estimatedEffort:{required: true, digits: true},
+                    investedEffort:{required: true, digits: true}
+                }
+            });
 
             $("#reset").click(function () {
+                $("#projectForm").validate().resetForm();
                 $("#projectForm input").each(function () {
                     $(this).val("");
                 });
             });
 
             $("#process").click(function () {
-                var project = new Project({
-                    executedBudget: $('#executedBudget').val(),
-                    totalBudget: $('#totalBudget').val(),
-                    deliveredFunctionality: $('#deliveredFunctionality').val(),
-                    commitedFunctionality: $('#commitedFunctionality').val(),
-                    elapsedTime: $('#elapsedTime').val(),
-                    estimatedTime: $('#estimatedTime').val(),
-                    investedEffort: $('#investedEffort').val(),
-                    estimatedEffort: $('#estimatedEffort').val(),
-                    projectType: $('#projectType').val(),
-                });
-                
-                matches = evaluateFrames(simpleFrames, compositeFrames, project);
-                
-                if (matches.compositeFrames.length > 0) {
-                    $('#results')
-                        .html("<h3>Coinciden los marcos</h3>");
-                    
-                    _.forEach(matches.compositeFrames, function(frame) {
-                        $('#results').append("<div>" + frame.name + "</div>")
-                    });
-                } else if (matches.simpleFrames.length > 0) {
-                    $('#results')
-                        .html("<h3>Coinciden los marcos</h3>");
-                    
-                    _.forEach(matches.simpleFrames, function(frame) {
-                        $('#results').append("<div>" + frame.name + "</div>")
-                    });
-                } else {
-                    $('#results')
-                        .html("<h3>No coincide ningun marco conocido</h3>");
+                if ($("#projectForm").valid()) {
+                    processProject();
                 }
-                /*if (!$("#projectForm").valid()) {
-                    return false;
-                }*/
             });
         });
+
+
+        function processProject() {
+            var project = new Project({
+                executedBudget: $('#executedBudget').val(),
+                totalBudget: $('#totalBudget').val(),
+                deliveredFunctionality: $('#deliveredFunctionality').val(),
+                commitedFunctionality: $('#commitedFunctionality').val(),
+                elapsedTime: $('#elapsedTime').val(),
+                estimatedTime: $('#estimatedTime').val(),
+                investedEffort: $('#investedEffort').val(),
+                estimatedEffort: $('#estimatedEffort').val(),
+                projectType: $('#projectType').val(),
+            });
+
+            matches = evaluateFrames(simpleFrames, compositeFrames, project);
+
+            if (matches.compositeFrames.length > 0) {
+                $('#results')
+                        .html("<h3>Coinciden los marcos</h3>");
+
+                _.forEach(matches.compositeFrames, function(frame) {
+                    $('#results').append("<div>" + frame.name + "</div>")
+                });
+            } else if (matches.simpleFrames.length > 0) {
+                $('#results')
+                        .html("<h3>Coinciden los marcos</h3>");
+
+                _.forEach(matches.simpleFrames, function(frame) {
+                    $('#results').append("<div>" + frame.name + "</div>")
+                });
+            } else {
+                $('#results')
+                        .html("<h3>No coincide ningun marco conocido</h3>");
+            }
+        }
     </script>
-    <!--
-      executedBudget: 11
-      totalBudget:    10
-
-      deliveredFunctionality: 6
-      commitedFunctionality:  5
-
-      elapsedTime:    5
-      estimatedTime: 20
-
-      investedEffort:    3
-      estimatedEffort: 10
-    -->
     <style>
         .side-by-side {
             float: left;
@@ -112,7 +106,7 @@
 
             <div class="controls">
                 <div class="input-prepend">
-                    <span class="add-on">$</span><input class="input-xlarge required" id="totalBudget" size="16" type="text">
+                    <span class="add-on">$</span><input class="input-xlarge" name="totalBudget" id="totalBudget" size="16" type="text">
 
                     <p class="help-block">Presupuesto estimado del proyecto</p>
                 </div>
@@ -123,7 +117,7 @@
 
             <div class="controls">
                 <div class="input-prepend">
-                    <span class="add-on">$</span><input class="input-xlarge required" id="executedBudget" size="16" type="text">
+                    <span class="add-on">$</span><input class="input-xlarge" id="executedBudget" name="executedBudget" size="16" type="text">
 
                     <p class="help-block">Presupuesto real ejecutado del proyecto</p>
                 </div>
@@ -133,7 +127,7 @@
             <label class="control-label" for="commitedFunctionality">Funcionalidad comprometida</label>
 
             <div class="controls">
-                <input class="input-xlarge required" id="commitedFunctionality" size="16" type="text">
+                <input class="input-xlarge" id="commitedFunctionality" name="commitedFunctionality" size="16" type="text">
 
                 <p class="help-block">Asigne un puntaje a la funcionalidad con la que se comprometi&oacute;</p>
             </div>
@@ -142,7 +136,7 @@
             <label class="control-label" for="deliveredFunctionality">Funcionalidad entregada</label>
 
             <div class="controls">
-                <input class="input-xlarge required" id="deliveredFunctionality" size="16" type="text">
+                <input class="input-xlarge" id="deliveredFunctionality" name="deliveredFunctionality" size="16" type="text">
 
                 <p class="help-block">Teniendo en cuenta el puntaje anterior, asigne un puntaje a la funcionalidad
                     entregada</p>
@@ -152,7 +146,7 @@
             <label class="control-label" for="estimatedTime">Tiempo estimado</label>
 
             <div class="controls">
-                <input class="input-xlarge required" id="estimatedTime" size="16" type="text">
+                <input class="input-xlarge" id="estimatedTime" name="estimatedTime" size="16" type="text">
 
                 <p class="help-block">Tiempo estimado del proyecto</p>
             </div>
@@ -161,7 +155,7 @@
             <label class="control-label" for="elapsedTime">Tiempo transcurrido</label>
 
             <div class="controls">
-                <input class="input-xlarge required" id="elapsedTime" size="16" type="text">
+                <input class="input-xlarge " id="elapsedTime" name="elapsedTime" size="16" type="text">
 
                 <p class="help-block">Tiempo transcurrido del proyecto</p>
             </div>
@@ -170,7 +164,7 @@
             <label class="control-label" for="estimatedEffort">Esfuerzo estimado</label>
 
             <div class="controls">
-                <input class="input-xlarge required" id="estimatedEffort" size="16" type="text">
+                <input class="input-xlarge " id="estimatedEffort" name="estimatedEffort" size="16" type="text">
 
                 <p class="help-block">Cantidad de horas hombre estimadas (dependiendo cantidad de recursos, si son part
                     o full time, etc)</p>
@@ -180,7 +174,7 @@
             <label class="control-label" for="investedEffort">Esfuerzo invertido</label>
 
             <div class="controls">
-                <input class="input-xlarge required" id="investedEffort" size="16" type="text">
+                <input class="input-xlarge " id="investedEffort" name="investedEffort" size="16" type="text">
 
                 <p class="help-block">Cantidad de horas hombre invertidas (dependiendo cantidad de recursos, si son part
                     o full time, etc)</p>
