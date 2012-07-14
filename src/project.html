@@ -10,6 +10,7 @@
     <script src="lib/jquery-validation-1.9.0/localization/messages_es.js"></script>
     <script src="lib/frames.js"></script>
     <script src="lib/sample-frames.js"></script>
+    <script src="lib/jquery.blockUI.js"></script>
     
     <title>Diagn&oacute;stico del proyecto</title>
     <script>
@@ -57,24 +58,26 @@
 
             matches = evaluateFrames(simpleFrames, compositeFrames, project);
 
+            var $container = $("<h2>Resultados</h2><div id='results'></div>");
+
             if (matches.compositeFrames.length > 0) {
-                $('#results')
-                        .html("<h3>Coinciden los marcos</h3>");
+                $container.append("<h3>Coinciden los marcos</h3>");
 
                 _.forEach(matches.compositeFrames, function(frame) {
-                    $('#results').append("<div>" + frame.name + "</div>")
+                    $container.append("<div>" + frame.name + "</div>")
                 });
             } else if (matches.simpleFrames.length > 0) {
-                $('#results')
-                        .html("<h3>Coinciden los marcos</h3>");
+                $container.append("<h3>Coinciden los marcos</h3>");
 
                 _.forEach(matches.simpleFrames, function(frame) {
-                    $('#results').append("<div>" + frame.name + "</div>")
+                    $container.append("<div>" + frame.name + "</div>")
                 });
             } else {
-                $('#results')
-                        .html("<h3>No coincide ningun marco conocido</h3>");
+                $container.append("<h3>No coincide ningun marco conocido</h3>");
             }
+
+            $.blockUI({ message: $container.html()});
+            $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
         }
     </script>
     <style>
@@ -187,8 +190,6 @@
         </div>
     </fieldset>
 </form>
-<h2>Resultados</h2>
-<div id="results"></div>
 </div>
 </body>
 </html>
