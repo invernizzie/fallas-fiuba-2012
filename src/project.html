@@ -45,14 +45,14 @@
 
         function processProject() {
             var project = new Project({
-                executedBudget: $('#executedBudget').val(),
-                totalBudget: $('#totalBudget').val(),
-                deliveredFunctionality: $('#deliveredFunctionality').val(),
-                commitedFunctionality: $('#commitedFunctionality').val(),
-                elapsedTime: $('#elapsedTime').val(),
-                estimatedTime: $('#estimatedTime').val(),
-                investedEffort: $('#investedEffort').val(),
-                estimatedEffort: $('#estimatedEffort').val(),
+                executedBudget: parseInt($('#executedBudget').val()),
+                totalBudget: parseInt($('#totalBudget').val()),
+                deliveredFunctionality: parseInt($('#deliveredFunctionality').val()),
+                commitedFunctionality: parseInt($('#commitedFunctionality').val()),
+                elapsedTime: parseInt($('#elapsedTime').val()),
+                estimatedTime: parseInt($('#estimatedTime').val()),
+                investedEffort: parseInt($('#investedEffort').val()),
+                estimatedEffort: parseInt($('#estimatedEffort').val()),
                 projectType: $('#projectType').val(),
             });
 
