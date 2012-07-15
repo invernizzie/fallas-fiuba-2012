@@ -12,8 +12,8 @@
   };
 
   SEVERIDAD = {
-    GRAVE: 'Grave',
-    MEDIA: 'Media'
+    GRAVE: 'severidad-grave',
+    MEDIA: 'severidad-media'
   };
 
   ACUERDO = {

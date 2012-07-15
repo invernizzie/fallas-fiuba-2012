@@ -14,3 +14,22 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .error {
   color: red;
 }
+
+.frame {
+    height: 40px;
+    text-align: left;
+}
+
+.frame.severidad-grave:before {
+    content: url(../resources/grave.png);
+    display: inline-block;
+    height: 18px;
+    padding: 2px;
+}
+
+.frame.severidad-media:before {
+    content: url(../resources/media.png);
+    display: inline-block;
+    height: 18px;
+    padding: 2px;
+}
