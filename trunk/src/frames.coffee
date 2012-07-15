@@ -53,16 +53,16 @@ evaluateFrames = (simpleFrames, compositeFrames, instance) ->
   return simpleFrames: simpleMatched, compositeFrames: compositeMatched
 
 
-# Export as node module
-if module?
-  module.exports.Project = Project
-  module.exports.Frame = Frame
-  module.exports.CompositeFrame = CompositeFrame
-  module.exports.evaluate = evaluateFrames
-# Export for the browser
+# To export for the browser
 _window = this
-# Doesn't fail like window.Project = ... on node.js
-_window.Project = Project
-_window.Frame = Frame
-_window.CompositeFrame = CompositeFrame
-_window.evaluateFrames = evaluateFrames
+exportName = (name, value) ->
+  return unless _.isString(name) and not _.isEmpty name
+  if module? # Export as node module
+    module.exports[name] = value
+  _window[name] = value
+
+exportName 'Project', Project
+exportName 'Frame', Frame
+exportName 'CompositeFrame', CompositeFrame
+exportName 'evaluateFrames', evaluateFrames
+
