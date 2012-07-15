@@ -111,7 +111,7 @@ createSingleRuleFrame 'Gestion de cambios deficiente', SEVERIDAD.MEDIA,
       proj.deliveredFunctionality > 1.1 * proj.commitedFunctionality and
           proj.projectType is ACUERDO.TIME_MAT
 
-createSingleRuleFrame 'Calendario excedente',
+createSingleRuleFrame 'Calendario excedente', SEVERIDAD.MEDIA,
     [
       'elapsedTime'
       'estimatedTime'
@@ -154,3 +154,13 @@ compositeFrames.push new CompositeFrame
   name: 'Proyecto al horno'
   requiredFrames: ['Presupuesto superado', 'Gestion de cambios deficiente']
 
+# To export for the browser
+_window = this
+exportName = (name, value) ->
+  return unless _.isString(name) and not _.isEmpty name
+  if module? # Export as node module
+    module.exports[name] = value
+  _window[name] = value
+
+exportName 'simpleFrames', simpleFrames
+exportName 'compositeFrames', compositeFrames
