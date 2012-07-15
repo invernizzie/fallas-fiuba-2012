@@ -58,25 +58,31 @@
 
             matches = evaluateFrames(simpleFrames, compositeFrames, project);
 
-            var $container = $("<h2>Resultados</h2><div id='results'></div>");
+            var $container = $(
+                "<h2>Resultados</h2>"
+               //+"<div id='results'></div>"
+            );
 
             if (matches.compositeFrames.length > 0) {
                 $container.append("<h3>Coinciden los marcos</h3>");
 
                 _.forEach(matches.compositeFrames, function(frame) {
-                    $container.append("<div>" + frame.name + "</div>")
+                    $container.append("<div class='frame'>" + frame.name + "</div>")
                 });
             } else if (matches.simpleFrames.length > 0) {
                 $container.append("<h3>Coinciden los marcos</h3>");
 
                 _.forEach(matches.simpleFrames, function(frame) {
-                    $container.append("<div>" + frame.name + "</div>")
+                    $container.append("<div class='frame " + frame.severity + "'>" + frame.name + "</div>")
                 });
             } else {
                 $container.append("<h3>No coincide ningun marco conocido</h3>");
             }
 
-            $.blockUI({ message: $container.html()});
+            $.blockUI({
+                message: $container.html(),
+                css: {padding: '10px'}
+            });
             $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
         }
     </script>

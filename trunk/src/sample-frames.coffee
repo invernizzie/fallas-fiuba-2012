@@ -8,8 +8,8 @@ createSingleRuleFrame = (name, severity, requiredSlots, ruleProcedure) ->
   )
 
 SEVERIDAD =
-  GRAVE: 'Grave'
-  MEDIA: 'Media'
+  GRAVE: 'severidad-grave'
+  MEDIA: 'severidad-media'
 
 ACUERDO =
   FIXED_PRICE: 'fp'
