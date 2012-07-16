@@ -48,3 +48,17 @@ div.title {
     margin: 10px 0px;
     font-size: 12pt;
 }
+
+.sugerencias {
+    font-size: 7pt;
+    cursor: pointer;
+    border: 0;
+    width: 14px;
+}
+
+.sugerenciasContent {
+    display: none;
+    text-align: left;
+    font-style: italic;
+    margin: 5px 2px;
+}

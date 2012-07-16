@@ -62,11 +62,13 @@
 
             if (matches.compositeFrames.length > 0) {
                 _.forEach(matches.compositeFrames, function(frame) {
-                    $container.append("<div class='frame'>" + frame.name + "</div>")
+                    $container.append("<div class='frame'>" + frame.name + "&nbsp;<img src='resources/icon_lupa.gif' alt='Ver sugerencias' title='Ver sugerencias' class='sugerencias'/></div>");
+                    $container.append("<div class='sugerenciasContent'>SARASA</div>");
                 });
             } else if (matches.simpleFrames.length > 0) {
                 _.forEach(matches.simpleFrames, function(frame) {
-                    $container.append("<div class='frame " + frame.severity + "'>" + frame.name + "</div>")
+                    $container.append("<div class='frame " + frame.severity + "'>" + frame.name + "&nbsp;<img src='resources/icon_lupa.gif' alt='Ver sugerencias' title='Ver sugerencias' class='sugerencias'/></div>")
+                    $container.append("<div class='sugerenciasContent'>" +  frame.suggestedCorrection + "</div>");
                 });
             } else {
                 $container = $("<h3><div class='frame severidad-ok title'>No coincide ningun marco conocido</div></h3>");
@@ -77,6 +79,10 @@
                 css: {padding: '10px'}
             });
             $('.blockOverlay').attr('title','Click para retornar').click($.unblockUI);
+
+            $(".sugerencias").click(function() {
+                $(this).parent().next().toggle('700');
+            });
         }
     </script>
     <style>
