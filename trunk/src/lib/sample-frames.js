@@ -109,7 +109,7 @@
   }, 'En este caso a el proyecto le sobra tiempo. Si bien no es bueno que se haya \
     sobreestimado la duracion del mismo, no es raz&oacute;n para alarmarse.');
 
-  createSingleRuleFrame('Esfuerzo sobreestimado', SEVERIDAD.ALTO, ['investedEffort', 'estimatedEffort', 'commitedFunctionality', 'deliveredFunctionality', 'projectType'], function(proj) {
+  createSingleRuleFrame('Esfuerzo sobreestimado', SEVERIDAD.GRAVE, ['investedEffort', 'estimatedEffort', 'commitedFunctionality', 'deliveredFunctionality', 'projectType'], function(proj) {
     var allDelivered, overestimated;
     allDelivered = proj.deliveredFunctionality >= proj.commitedFunctionality;
     overestimated = proj.estimatedEffort > 1.1 * proj.investedEffort;
