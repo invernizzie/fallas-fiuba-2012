@@ -68,7 +68,7 @@
             } else if (matches.simpleFrames.length > 0) {
                 _.forEach(matches.simpleFrames, function(frame) {
                     $container.append("<div class='frame " + frame.severity + "'>" + frame.name + "&nbsp;<img src='resources/icon_lupa.gif' alt='Ver sugerencias' title='Ver sugerencias' class='sugerencias'/></div>")
-                    $container.append("<div class='sugerenciasContent'>" +  frame.suggestedCorrection + "</div>");
+                    $container.append("<div class='sugerenciasContent'><b>Sugerencias del experto:</b><br />" +  frame.suggestedCorrection + "</div>");
                 });
             } else {
                 $container = $("<h3><div class='frame severidad-ok title'>No coincide ningun marco conocido</div></h3>");
