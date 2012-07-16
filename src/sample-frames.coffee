@@ -156,7 +156,7 @@ createSingleRuleFrame 'Calendario excedente', SEVERIDAD.MEDIA,
     'En este caso a el proyecto le sobra tiempo. Si bien no es bueno que se haya 
     sobreestimado la duracion del mismo, no es raz&oacute;n para alarmarse.'
 
-createSingleRuleFrame 'Esfuerzo sobreestimado', SEVERIDAD.ALTO,
+createSingleRuleFrame 'Esfuerzo sobreestimado', SEVERIDAD.GRAVE,
     [
       'investedEffort'
       'estimatedEffort'
