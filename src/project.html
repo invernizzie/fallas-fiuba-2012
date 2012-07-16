@@ -63,7 +63,7 @@
             if (matches.compositeFrames.length > 0) {
                 _.forEach(matches.compositeFrames, function(frame) {
                     $container.append("<div class='frame'>" + frame.name + "&nbsp;<img src='resources/icon_lupa.gif' alt='Ver sugerencias' title='Ver sugerencias' class='sugerencias'/></div>");
-                    $container.append("<div class='sugerenciasContent'>SARASA</div>");
+                    $container.append("<div class='sugerenciasContent'><b>Sugerencias del experto:</b><br />" +  frame.suggestedCorrection + "</div>");
                 });
             } else if (matches.simpleFrames.length > 0) {
                 _.forEach(matches.simpleFrames, function(frame) {
