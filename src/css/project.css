@@ -33,3 +33,18 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     height: 18px;
     padding: 2px;
 }
+
+.frame.severidad-ok:before {
+    content: url(../resources/ok.png);
+    display: inline-block;
+    height: 18px;
+    padding: 4px;
+}
+
+
+div.title {
+    font-weight: bold;
+    text-align: left;
+    margin: 10px 0px;
+    font-size: 12pt;
+}
